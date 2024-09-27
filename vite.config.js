@@ -20,10 +20,19 @@ export default defineConfig({
             output: {
                 // cache: false,
                 entryFileNames: `js/main.[hash].js`, // Настройка имен JS-файлов
-                chunkFileNames: `js/data.[hash].js`,
-                // assetFileNames: '[name].[hash].[ext]',
+                chunkFileNames: `js/plugins.[hash].js`,
+                // assetFileNames: 'css/style.[hash].[ext]',
+                assetFileNames: (assetInfo) => {
+                    if (assetInfo.name.endsWith('.css')) 
+                        return 'css/styles.[hash].[ext]';    // Все CSS-файлы будут сохранены в папку 'styles'
+                        // return 'styles/[name]-[hash][extname]'; // Все CSS-файлы будут сохранены в папку 'styles'
+                    
+                    return 'assets/[name]-[hash][extname]'; // Другие ассеты (изображения и т.д.) в папку 'assets'
+                },
             },
         },
+        cssCodeSplit: false,
+        cssMinify: true,
     },
     server: {
         watch: {
