@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel+VUE'),
+    'name' => env('APP_NAME', 'Виготовлення металоконструкцій TPK-1'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://lvue'),
+    'url' => env('APP_URL', 'https://tpk.com.ua'),
 
     'asset_url' => env('ASSET_URL'),
 
