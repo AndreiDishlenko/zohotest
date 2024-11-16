@@ -8,7 +8,7 @@
         @vite(['style.css'])
     </head>
 
-    <body>       
+    <body class="bg-light" style="">       
         
         <div id="app"></div>
 

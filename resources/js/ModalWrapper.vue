@@ -18,7 +18,6 @@
 			'instance': {
 				type: String,
 				required: false,
-				// default: randomString(5)
 			},
 			'size': {
 				type: String,
@@ -46,40 +45,17 @@
 			let $this=this;
 
 			dom_modal.addEventListener('show.bs.modal', function(event) {
-				// console.log('modal.show');
 				$this.$emit('show');
 			});
 			dom_modal.addEventListener('shown.bs.modal', function(event) {
-				// console.log('modal.shown');
 				$this.$emit('shown');	
-				
-				// Close modal on android back button
-				if (typeof(this.dataset.hash) !== 'undefined') 
-					history.pushState(null, null, this.dataset.hash)
 			});
-			// dom_modal.addEventListener('hide.bs.modal', function(event) {
-			// 	// console.log('modal.hide');
-			// 	$this.$emit('hide');
-			// 	// Close modal on android back button
-			// 	if (this.dataset.pushback !== 'true') {
-			// 		event.preventDefault();
-			// 		history.back();
-			// 	}
-			// 	this.dataset.pushback = '';
-			// })
-			// dom_modal.addEventListener('hidden.bs.modal', event => {
-			// 	// console.log('modal.hiden');
-			// 	$this.$emit('hiden');
-			// });
 		},
 		methods: {
-			
-			show: function() {
-				// console.log('Modal.show', this.modalform);				
+			show: function() {	
 				this.modalform.show();
 			},
 			close: function() {
-				// console.log('Modal.close');
 				this.modalform.hide();
 			}
 		}

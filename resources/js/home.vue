@@ -1,7 +1,7 @@
 <template>
 
-    <div class="wrapper">
-        <Form ref="formRef" class="form">
+    <div class="wrapper ">
+        <Form ref="formRef" class="form bg-white">
             <h4 class="form-header mb-4">NEW DEAL</h4>
             <div class="form-group mb-3">
                 <label class="form-label">Deal name:</label>
@@ -99,6 +99,7 @@
         mounted() {
             this.refreshAccountsNames();
             this.focusDealName();
+            toast('Deal added.')
         },
         methods: {
             async refreshAccountsNames() {
@@ -139,25 +140,17 @@
                     this.filtred_accounts = this.accounts;
                 }
                 
-                if (!this.accounts.length) {
-                    
+                if (!this.accounts.length) 
                     return false;
-                }
-                    
-
+                
                 if ( newValue ) {
-                    
                     this.filtred_accounts = this.accounts.filter((t)=>t.toLowerCase().includes(newValue.toLowerCase()))
-                    if (!this.filtred_accounts.length) {
+                    if (!this.filtred_accounts.length) 
                         this.show_dropdown = false;
-                        // this.$refs.AccountName.validate();
-                    } else {
+                    else
                         this.show_dropdown = true;
                         console.log(this.$refs.AccountName)
-                        // this.$refs.AccountName.reset();
-                    }
                 }
-                    // this.$refs.dropdown.classList.remove('d-none')
             },
             selectAccountName(selectedValue) {
                 // console.log("selectAccountName")
@@ -242,10 +235,9 @@
                 // console.log("Submit form")
                 const { validate } = this.$refs.formRef; 
                 const { valid, errors } = await validate(); 
-                if ( !valid ) {
-                    console.log('Форма содержит ошибки:', errors);
+                if ( !valid ) 
                     return false;
-                }
+                
 
                 let url = window.location.origin.replace(/[#\/]$/, '')+"/api/deals";
                 let json_data = {
@@ -277,8 +269,8 @@
 
 <style>
     .wrapper {
-        width: 100vw;
-        height: 80vh;
+        width: 100dvw;
+        height: 100dvh;
         display: flex;
         justify-content: center;
         align-items: center;
