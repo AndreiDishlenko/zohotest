@@ -278,7 +278,7 @@
 <style>
     .wrapper {
         width: 100vw;
-        min-height: 100vh;
+        height: 80vh;
         display: flex;
         justify-content: center;
         align-items: center;
