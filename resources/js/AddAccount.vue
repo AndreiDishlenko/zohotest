@@ -135,7 +135,7 @@
                     this.isDisabled = false;
                     this.form_error = '';
 
-                    toast('Account added.')
+                    toast('Account added.', {position: toast.POSITION.BOTTOM_CENTER})
                     this.$emit('closeForm', { name: this.account_name });
                 } catch (error) {
                     this.isDisabled = false;

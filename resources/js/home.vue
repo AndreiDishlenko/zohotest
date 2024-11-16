@@ -255,7 +255,7 @@
                     else
                         this.form_error = '';
 
-                    toast('Deal added.')
+                    toast('Deal added.', {position: toast.POSITION.BOTTOM_CENTER})
                     this.resetForm();                   
                 } catch (error) {
                     this.isDisabled = false;
