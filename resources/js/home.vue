@@ -38,7 +38,7 @@
             </div>
             <div class="form-group mb-3">
                 <label class="form-label">Date of conclusion:</label>
-                <Field type="text" class="form-control"  placeholder="Enter date of conclusion" 
+                <Field type="text" class="form-control"  placeholder="Enter deal start date in dd.mm.yyyy format" 
                     name="created_time"
                     v-model="created_time" 
                     :rules="validateDate"
@@ -48,7 +48,7 @@
             </div>
             <div class="form-group mb-4">
                 <label class="form-label">Deal stage:</label>
-                <Field type="text" class="form-control"  placeholder="Enter deal stage in dd.mm.yyyy format" 
+                <Field type="text" class="form-control"  placeholder="Enter deal stage" 
                     name="stage" 
                     v-model="stage"
                     :rules="validateStage"
