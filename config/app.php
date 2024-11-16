@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://tpk.com.ua'),
+    'url' => env('APP_URL', 'http://chnzohot61635.avalon.chost.com.ua'),
 
     'asset_url' => env('ASSET_URL'),
 
