@@ -99,7 +99,6 @@
         mounted() {
             this.refreshAccountsNames();
             this.focusDealName();
-            toast('Deal added.')
         },
         methods: {
             async refreshAccountsNames() {
