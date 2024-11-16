@@ -6,7 +6,6 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/about.js', 
                 'resources/js/home.js'
             ],
             refresh: true,
