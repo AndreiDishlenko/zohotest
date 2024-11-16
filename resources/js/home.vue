@@ -48,7 +48,7 @@
             </div>
             <div class="form-group mb-4">
                 <label class="form-label">Deal stage:</label>
-                <Field type="text" class="form-control"  placeholder="Enter deal stage" 
+                <Field type="text" class="form-control"  placeholder="Enter deal stage in dd.mm.yyyy format" 
                     name="stage" 
                     v-model="stage"
                     :rules="validateStage"
@@ -282,7 +282,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        
+
         font-size:14px;
     }
 
