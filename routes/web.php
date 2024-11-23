@@ -14,4 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', [HomeController::class, 'test']);
 Route::get('/', [HomeController::class, 'index']);
+

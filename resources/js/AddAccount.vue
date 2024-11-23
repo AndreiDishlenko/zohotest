@@ -85,7 +85,7 @@
                 if ( !value ) 
                     return 'This field is required.';
 
-                const regex = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*$/;
+                const regex = /^(www\.)?[\w.-]+\.[a-z]{2,6}(\/.*)?$/;
                 if (!regex.test(value)) 
                     return 'This field must be a valid website name';
 
@@ -103,7 +103,6 @@
                 return true;
             },
             resetForm() {
-                // console.log('resetValidation');                
                 this.$refs.formRef.resetForm({
                     values: {
                         account_name: '',
@@ -139,7 +138,7 @@
                     this.$emit('closeForm', { name: this.account_name });
                 } catch (error) {
                     this.isDisabled = false;
-                    this.form_error = error;
+                    this.form_error = "Ошибка отправки данных";
                 }
             },
         }

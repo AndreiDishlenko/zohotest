@@ -39,12 +39,12 @@
             <div class="form-group mb-3">
                 <label class="form-label">Date of conclusion:</label>
                 <Field type="text" class="form-control"  placeholder="Enter deal start date in dd.mm.yyyy format" 
-                    name="created_time"
-                    v-model="created_time" 
+                    name="closing_date"
+                    v-model="closing_date" 
                     :rules="validateDate"
                     :validateOnBlur="false"
                     :disabled="isDisabled"/>
-                <ErrorMessage name="created_time" class="form-error"/>
+                <ErrorMessage name="closing_date" class="form-error"/>
             </div>
             <div class="form-group mb-4">
                 <label class="form-label">Deal stage:</label>
@@ -84,7 +84,7 @@
             return {
                 deal_name: '',
                 account_name: '',
-                created_time: '',
+                closing_date: '',
                 stage: '',
 
                 accounts: [],
@@ -119,9 +119,10 @@
                 try {                   
                     const response = await axios.get( window.location.origin.replace(/[#\/]$/, '')+"/api/accounts" );
                     this.accounts = pluck( response.data, "Account_Name")
-                    console.log('Accounts result', this.accounts)
+                    // console.log('Accounts result', this.accounts)
                 } catch (error) {
                     console.error("Ошибка при выполнении запроса:", error);
+                    this.form_error = "Ошибка загрузки формы";
                 }
             },
 
@@ -132,8 +133,7 @@
 
             // Account field functions
             searchAccountName(newValue) {
-                // console.log('searchAccountName', newValue);
-                
+                // console.log('searchAccountName', newValue);               
                 if ( !newValue ) {
                     this.show_dropdown = false;
                     this.filtred_accounts = this.accounts;
@@ -148,7 +148,7 @@
                         this.show_dropdown = false;
                     else
                         this.show_dropdown = true;
-                        console.log(this.$refs.AccountName)
+                        // console.log(this.$refs.AccountName)
                 }
             },
             selectAccountName(selectedValue) {
@@ -171,7 +171,7 @@
             },
             closeAddAccountAction(params) {
                 this.$refs.modal_card.close();
-                if (params.name) 
+                if (params?.name) 
                     this.accounts.push(params.name);
             },
 
@@ -222,7 +222,7 @@
                     values: {
                         deal_name: '',
                         account_name: '',
-                        created_time: '',
+                        closing_date: '',
                         stage: ''
                     }
                 });
@@ -242,7 +242,7 @@
                 let json_data = {
                     "Deal_Name": this.deal_name,
                     "Account_Name": this.account_name,
-                    "Created_Time": this.created_time,
+                    "Closing_Date": this.closing_date,
                     "Stage": this.stage,
                 }
 
