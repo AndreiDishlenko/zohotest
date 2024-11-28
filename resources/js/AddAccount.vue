@@ -49,7 +49,7 @@
 
 <script>
     import { Form, Field, ErrorMessage  } from 'vee-validate';
-    import axios from "axios"
+    import ApiClient from "./apiclient.js"
     import {mask} from 'vue-the-mask'
     import { toast } from 'vue3-toastify';
     import 'vue3-toastify/dist/index.css';
@@ -117,28 +117,31 @@
                 const { validate } = this.$refs.formRef; 
                 const { valid, errors } = await validate(); 
                 if ( !valid ) {
-                    console.log('Форма содержит ошибки:', errors);
+                    console.log('Form contains errors:', errors);
                     return false;
-                }
-
-                let url = window.location.origin.replace(/[#\/]$/, '')+"/api/accounts";
-                let json_data = {
-                    "Account_Name": this.account_name,
-                    "Website": this.website,
-                    "Phone": this.phone
                 }
 
                 try {                   
                     this.isDisabled = true;
-                    const response = await axios.post( url, json_data );
-                    this.isDisabled = false;
-                    this.form_error = '';
+                    let apiClient = await ApiClient.init(true);
 
+                    let json_data = {
+                        "Account_Name": this.account_name,
+                        "Website": this.website,
+                        "Phone": this.phone
+                    }
+
+                    const response = await apiClient.post( '/accounts', json_data );
+                    if (response.status!=200)
+                        throw new TypeError(response.data?.error);
+
+                    this.form_error = '';
+                    this.isDisabled = false;                  
                     toast('Account added.', {position: toast.POSITION.BOTTOM_CENTER})
                     this.$emit('closeForm', { name: this.account_name });
                 } catch (error) {
-                    this.isDisabled = false;
-                    this.form_error = "Ошибка отправки данных";
+                    this.form_error = "Account adding error: "+error.message;
+                    this.isDisabled = false;                    
                 }
             },
         }
@@ -146,5 +149,4 @@
 </script>
 
 <style>
-    
 </style>

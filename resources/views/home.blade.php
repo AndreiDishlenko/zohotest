@@ -9,7 +9,7 @@
     </head>
 
     <body class="bg-light" style="">       
-        
+
         <div id="app"></div>
 
         @vite(['resources/js/home.js'])

@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -26,5 +28,36 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        // Проверяем, является ли запрос API-запросом
+        if ($request->expectsJson()) {
+
+            // Обработка ошибок валидации
+            if ($exception instanceof ValidationException) {
+                return response()->json([
+                    'error' => 'Validation Error',
+                    'messages' => $exception->errors(),
+                ], 422);
+            }
+
+            // Обработка HTTP-ошибок (например, 404, 403)
+            if ($exception instanceof HttpException) {
+                return response()->json([
+                    'error' => $exception->getMessage() ?: 'HTTP Error',
+                ], $exception->getStatusCode());
+            }
+
+            // Обработка других исключений
+            return response()->json([
+                'error' => 'Server Error',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
+
+        // Для не-API запросов используем стандартный обработчик
+        return parent::render($request, $exception);
     }
 }

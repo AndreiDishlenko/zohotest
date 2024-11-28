@@ -6,6 +6,8 @@ use Exception;
 use App\Services\ZohoAuth;
 use Illuminate\Http\Request;
 use App\Services\ZohoRecords;
+
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Validator;
 class AccountsApiController extends Controller
 {
     public static function getRecords() {
+        // JWTAuth::
+        // dd(JWTAuth::parseToken());
+        // dd(JWTAuth::user());
+        // $token = JWTAuth::parseToken();
+        // $token->check
+        // dd($token->authenticate());
+
         $fieldNames = ["Account_Name", "Website", "Phone"];
 
         try {

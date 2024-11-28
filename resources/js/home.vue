@@ -61,8 +61,9 @@
 
             <button id="submitbutton" class="submit w-100" @click="submitForm" :disabled="isDisabled">Add deal</button>
         </Form>
+        
     </div>
-
+    
     <ModalWrapper ref="modal_card" instance="modalWindow" :size="'modal-md'" :esc_close="true" @show="$refs.modal_form.shown?.();">
         <AddAccountForm ref="modal_form" @closeForm="closeAddAccountAction"/>
     </ModalWrapper>
@@ -74,7 +75,7 @@
     import AddAccountForm from './AddAccount.vue';
 
     import { Form, Field, ErrorMessage, useForm  } from 'vee-validate';
-    import axios from "axios"
+    import ApiClient from "./apiclient.js"
     import { toast } from 'vue3-toastify';
     import 'vue3-toastify/dist/index.css';
 
@@ -82,6 +83,7 @@
         components: {Form, Field, ErrorMessage, useForm, ModalWrapper, AddAccountForm},
         data() {
             return {
+                access_token: '',
                 deal_name: '',
                 account_name: '',
                 closing_date: '',
@@ -96,33 +98,38 @@
                 form_error: '',
             }
         },
-        mounted() {
-            this.refreshAccountsNames();
+        async mounted() {
+            this.refreshAccountsNames();                
             this.focusDealName();
         },
         methods: {
+            pluck(arr, key) {
+                var newArr = [];
+                for (let i = 0; i < arr.length; i++) {
+                    newArr.push( arr[i][key] );
+                };
+
+                newArr = newArr.filter((element, index) => {
+                    return newArr.indexOf(element) === index;
+                });
+
+                return newArr;
+            },
+
             async refreshAccountsNames() {
-                // console.log('refreshAccountsNames');
-                let pluck = function(arr, key) {
-                    var newArr = [];
-                    for (let i = 0; i < arr.length; i++) {
-                        newArr.push( arr[i][key] );
-                    };
+                // console.log('refreshAccountsNames');               
+                try {
+                    this.isDisabled = true;
 
-                    newArr = newArr.filter((element, index) => {
-                        return newArr.indexOf(element) === index;
-                    });
+                    let apiClient = await ApiClient.init(true);                                      
+                    const response = await apiClient.get( "/accounts" );
+                    if (response.status!=200)
+                        throw new TypeError(response.data?.error);
 
-                    return newArr;
-                }
-                
-                try {                   
-                    const response = await axios.get( window.location.origin.replace(/[#\/]$/, '')+"/api/accounts" );
-                    this.accounts = pluck( response.data, "Account_Name")
-                    // console.log('Accounts result', this.accounts)
+                    this.isDisabled = false;
+                    this.accounts = this.pluck( response.data, "Account_Name")
                 } catch (error) {
-                    console.error("Ошибка при выполнении запроса:", error);
-                    this.form_error = "Ошибка загрузки формы";
+                    this.form_error = "Form loading error: "+error.message;
                 }
             },
 
@@ -237,29 +244,29 @@
                 if ( !valid ) 
                     return false;
                 
-
-                let url = window.location.origin.replace(/[#\/]$/, '')+"/api/deals";
-                let json_data = {
-                    "Deal_Name": this.deal_name,
-                    "Account_Name": this.account_name,
-                    "Closing_Date": this.closing_date,
-                    "Stage": this.stage,
-                }
-
                 try {                   
                     this.isDisabled = true;
-                    const response = await axios.post( url, json_data );
+                    let apiClient = await ApiClient.init(true);
 
-                    if (response?.data?.statuscode==400)
-                        this.form_error = "Error "+response?.data?.message+" "+JSON.stringify(response?.data?.details);                        
-                    else
-                        this.form_error = '';
+                    let json_data = {
+                        "Deal_Name": this.deal_name,
+                        "Account_Name": this.account_name,
+                        "Closing_Date": this.closing_date,
+                        "Stage": this.stage,
+                    }
 
+                    const response = await apiClient.post( "/deals", json_data );
+                    if (response.status!=200)
+                        throw new TypeError(response.data?.error);
+
+                    this.isDisabled = false;
+                    this.form_error = '';
                     toast('Deal added.', {position: toast.POSITION.BOTTOM_CENTER})
                     this.resetForm();                   
                 } catch (error) {
+                    this.form_error = "Deal adding error: "+error.message;
                     this.isDisabled = false;
-                    this.form_error = error;
+                    
                 }
             }
         }
